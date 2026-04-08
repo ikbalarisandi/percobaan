@@ -1,23 +1,44 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Dashboard ESP32</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ESP32 Monitoring Dashboard</title>
+
 <link rel="stylesheet" href="style.css">
+
 <script src="https://unpkg.com/mqtt/dist/mqtt.min.js"></script>
 </head>
 
 <body>
 
-<div class="card">
-<h2>Monitoring DHT11</h2>
+<div class="container">
 
-<div class="data">
-Suhu : <span id="suhu">0</span> °C
+<h1>ESP32 Monitoring Dashboard</h1>
+
+<div class="grid">
+
+<div class="card suhu">
+<h2>Temperature</h2>
+<div class="value" id="suhu">0</div>
+<div class="unit">°C</div>
 </div>
 
-<div class="data">
-Kelembapan : <span id="hum">0</span> %
+<div class="card hum">
+<h2>Humidity</h2>
+<div class="value" id="hum">0</div>
+<div class="unit">%</div>
+</div>
+
+<div class="card relay">
+<h2>Relay Status</h2>
+<div class="relay-status" id="relay">OFF</div>
+</div>
+
+</div>
+
+<div class="footer">
+ESP32 + HiveMQ Realtime Monitoring
 </div>
 
 </div>
