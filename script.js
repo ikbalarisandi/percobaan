@@ -14,7 +14,26 @@ client.on("message", function (topic, message) {
 
 let data = JSON.parse(message.toString());
 
-document.getElementById("suhu").innerHTML = data.suhu;
-document.getElementById("hum").innerHTML = data.hum;
+let suhu = data.suhu;
+let hum = data.hum;
+
+document.getElementById("suhu").innerHTML = suhu.toFixed(1);
+document.getElementById("hum").innerHTML = hum.toFixed(1);
+
+// relay logic
+let relayElement = document.getElementById("relay");
+
+if(suhu >= 29.5)
+{
+relayElement.innerHTML = "ON";
+relayElement.classList.remove("relay-off");
+relayElement.classList.add("relay-on");
+}
+else
+{
+relayElement.innerHTML = "OFF";
+relayElement.classList.remove("relay-on");
+relayElement.classList.add("relay-off");
+}
 
 });
