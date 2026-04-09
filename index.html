@@ -1,49 +1,123 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ESP32 Monitoring Dashboard</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<title>TempeSmart - Monitoring Sistem Tempe</title>
 
-<link rel="stylesheet" href="style.css">
+<!-- Font Awesome Icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
+<!-- MQTT Library -->
 <script src="https://unpkg.com/mqtt/dist/mqtt.min.js"></script>
-</head>
 
+<!-- CSS External -->
+<link rel="stylesheet" href="style.css">
+</head>
 <body>
 
-<div class="container">
+<div class="dashboard">
+  
+  <!-- Header Jam Real-Time & Waktu Proses -->
+  <div class="header-time">
+    <div class="jam-now">
+      <i class="far fa-clock"></i> 
+      <span id="liveDateTime">--, -- --- ---- --:--:--</span>
+    </div>
+    <div class="proses-info">
+      <i class="fas fa-microchip"></i> All sensors stable &nbsp;|&nbsp;
+      <i class="fas fa-charging-station"></i> Fase: <span id="faseText">Inkubasi (Aktif)</span>
+      &nbsp;|&nbsp;
+      <i class="fas fa-hourglass-half"></i> <span id="timerProgress">18h 45m / 24h</span>
+    </div>
+  </div>
 
-<h1>ESP32 Monitoring Dashboard</h1>
+  <!-- Judul utama -->
+  <div class="main-title">
+    <i class="fas fa-seedling"></i> TempeSmart MONITORING SYSTEM
+    <i class="fas fa-chart-line"></i>
+  </div>
 
-<div class="grid">
+  <!-- Grid utama monitoring -->
+  <div class="grid-monitor">
+    <!-- CARD SUHU RUANG -->
+    <div class="card">
+      <div class="card-header">
+        <h3><i class="fas fa-thermometer-half"></i> SUHU RUANG</h3>
+        <div class="status-badge" id="suhuStatusBadge">Normal - Ideal</div>
+      </div>
+      <div class="big-value">
+        <span id="suhuValue">32.1</span><span class="unit-text"> °C</span>
+      </div>
+      <div class="info-row">
+        <span><i class="fas fa-chart-simple"></i> Status</span>
+        <span id="suhuStatusText">Normal - Ideal</span>
+      </div>
+      <div class="gauge-mini">
+        <i class="fas fa-temperature-low"></i> Range optimal: 28°C - 32°C
+      </div>
+    </div>
 
-<div class="card suhu">
-<h2>Temperature</h2>
-<div class="value" id="suhu">0</div>
-<div class="unit">°C</div>
+    <!-- CARD KELEMBAPAN -->
+    <div class="card">
+      <div class="card-header">
+        <h3><i class="fas fa-tint"></i> KELEMBAPAN</h3>
+        <div class="status-badge" id="humStatusBadge">Optimal</div>
+      </div>
+      <div class="big-value">
+        <span id="humValue">85</span><span class="unit-text"> %</span>
+      </div>
+      <div class="info-row">
+        <span><i class="fas fa-check-circle"></i> Kondisi</span>
+        <span id="humStatusText">Optimal</span>
+      </div>
+    </div>
+
+    <!-- CARD STATUS RELAY (Pemanas & Kipas) sesuai gambar -->
+    <div class="card">
+      <div class="card-header">
+        <h3><i class="fas fa-plug"></i> STATUS RELAY</h3>
+        <div class="status-badge" id="mqttStatus">ONLINE</div>
+      </div>
+      <div class="relay-double">
+        <div class="relay-item">
+          <div class="relay-label"><i class="fas fa-fire"></i> Pemanas</div>
+          <div class="relay-state" id="pemanasState">ON</div>
+        </div>
+        <div class="relay-item">
+          <div class="relay-label"><i class="fas fa-fan"></i> KIPAS</div>
+          <div class="relay-state" id="kipasState">OFF</div>
+        </div>
+      </div>
+      <div class="online-status" style="text-align: center;">
+        <i class="fas fa-wifi"></i> HiveMQ Realtime
+      </div>
+    </div>
+  </div>
+
+  <!-- TREN DATA 12 JAM TERAKHIR (Grafik sederhana) -->
+  <div class="card trend-card" style="margin-bottom: 1.2rem;">
+    <div class="card-header">
+      <h3><i class="fas fa-chart-line"></i> TREN DATA (12 JAM TERAKHIR)</h3>
+      <div class="status-badge">Real-time</div>
+    </div>
+    <div class="trend-container">
+      <div class="trend-bars" id="trendBarsContainer">
+        <!-- 6 sample bars akan diisi javascript berdasarkan data suhu & kelembaban simulasi historis -->
+      </div>
+      <div class="legend-trend">
+        <span><i class="fas fa-thermometer-half" style="color:#ff9f4a;"></i> Suhu (°C)</span>
+        <span><i class="fas fa-tint" style="color:#4dabf7;"></i> Kelembapan (%)</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-note">
+    <i class="fas fa-microchip"></i> TempeSmart v2.0 • Monitoring Inkubasi Tempe • Data via Sensor DHT11
+  </div>
 </div>
 
-<div class="card hum">
-<h2>Humidity</h2>
-<div class="value" id="hum">0</div>
-<div class="unit">%</div>
-</div>
-
-<div class="card relay">
-<h2>Relay Status</h2>
-<div class="relay-status" id="relay">OFF</div>
-</div>
-
-</div>
-
-<div class="footer">
-ESP32 + HiveMQ Realtime Monitoring
-</div>
-
-</div>
-
+<!-- JS External -->
 <script src="script.js"></script>
-
 </body>
 </html>
